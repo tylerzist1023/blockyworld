@@ -38,7 +38,7 @@ struct Array
         {
             resize(16);
         }
-        else if(size > capacity)
+        else if(size >= capacity)
         {
             resize(capacity*2);
         }
@@ -67,7 +67,7 @@ struct Array
     inline void destroy()
     {
         clear();
-        free(*data);
+        free(data);
     }
 
     T &operator[](int i)

@@ -1,4 +1,5 @@
 #include "atlas.h "
+#include "raylib.h "
 #include "raylib.h"
 #include "rlgl.h"
 #include "raymath.h"
@@ -38,20 +39,20 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
 
     SetTargetFPS(60); // Set our game to run at 60 frames-per-second
 
-    Player player = {0};
-    player_init(&player);
+    
 
     DisableCursor();
 
     Atlas atlas = atlas_create("res/texture.png");
 
-    Chunk chunk = chunk_generate(0,0);
+    World world;
+    player_init(&(world.player));
 
     // Main game loop
     while (!WindowShouldClose()) // Detect window close button or ESC key
     {
         // Update
-        player_update(&player);
+        player_update(&(world.player));
 
         Vector2 mouse_delta = GetMouseDelta();
         float sensitivity = 1/8.0f;
@@ -62,9 +63,9 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
         // Draw
         BeginDrawing();
 
-            ClearBackground(RAYWHITE);
+            ClearBackground(SKYBLUE);
 
-            BeginMode3D(player.camera);
+            BeginMode3D(world.player.camera);
 
                 rlBegin(RL_TRIANGLES);
 
@@ -77,7 +78,7 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
 
                 rlEnd(); 
 
-                chunk_render(atlas, chunk);
+                world_update(&world, atlas);
 
             EndMode3D();
 
