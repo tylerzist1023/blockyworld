@@ -232,7 +232,7 @@ void fuse_block_to_chunk(ChunkData *chunk_data, int x, int y, int z, Atlas atlas
     }
 }
 
-void update_chunk_data_model(ChunkData *chunk_data)
+void generate_chunk_data_model(ChunkData *chunk_data)
 {
     Mesh mesh = {0};
 
@@ -305,7 +305,7 @@ Chunk chunk_generate(int x, int z, Atlas atlas)
             }
         }
     }
-    update_chunk_data_model(chunk.data);
+    generate_chunk_data_model(chunk.data);
 
     chunk.x = x;
     chunk.z = z;
