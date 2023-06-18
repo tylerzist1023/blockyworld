@@ -5,14 +5,26 @@
 enum BlockType
 {
     BLOCK_TYPE_GRASS = 0,
-    BLOCK_TYPE_AIR = 1,
+    BLOCK_TYPE_DIRT,
+    BLOCK_TYPE_STONE,
+    BLOCK_TYPE_AIR,
+};
+
+enum Faces
+{
+    FRONT=0,
+    RIGHT,
+    BACK,
+    LEFT,
+    BOTTOM,
+    TOP
 };
 
 // Information about the block type
 struct BlockInfo
 {
     int type;
-    int texture_id;
+    int cube_map[6];
     int animation_frames;
     bool is_cube;
 };
@@ -57,4 +69,3 @@ struct World
 };
 
 void world_update(World *world, Atlas atlas);
-void world_get_next_chunk(World *world, int x,int z, int depth=0);

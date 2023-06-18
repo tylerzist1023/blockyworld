@@ -1,4 +1,5 @@
 #include "world.h"
+#include "atlas.h"
 #include "raylib.h"
 #include <stdlib.h>
 #include <string.h>
@@ -7,12 +8,14 @@ static Model block_model = {0};
 
 static const BlockInfo BLOCK_INFO[] = 
 {
-    {BLOCK_TYPE_GRASS, 0, 1, true},
-    {BLOCK_TYPE_AIR, 0, 1, false},
+    {BLOCK_TYPE_GRASS, {2,2,2,2,1,0}, 1, true},
+    {BLOCK_TYPE_DIRT, {1,1,1,1,1,1}, 1, true},
+    {BLOCK_TYPE_STONE, {3,3,3,3,3,3}, 1, true},
+    {BLOCK_TYPE_AIR, {0,0,0,0,0,0}, 1, false},
 };
 
 
-void fuse_block_to_chunk(ChunkData *chunk_data, int x, int y, int z)
+void fuse_block_to_chunk(ChunkData *chunk_data, int x, int y, int z, Atlas atlas)
 {
     float vertices[] = 
     {
@@ -71,62 +74,30 @@ void fuse_block_to_chunk(ChunkData *chunk_data, int x, int y, int z)
         -0.5f,  0.5f, 0.5f,   // Vertex 5
     };
 
-    float texcoords[] =
+    float texcoords[70];
+    for(int i = 0; i < 6; i++)
     {
-        // Front face
-        0.0f, 0.0f,   // Vertex 0
-        1.0f, 0.0f,   // Vertex 1
-        1.0f, 1.0f,   // Vertex 2
+        Vector4 uv_coords = atlas_index_to_uv(atlas, BLOCK_INFO[chunk_data->blocks[y][x][z].type].cube_map[i]);
 
-        1.0f, 1.0f,   // Vertex 2
-        0.0f, 1.0f,   // Vertex 3
-        0.0f, 0.0f,   // Vertex 0
+        texcoords[i*12] = uv_coords.x;
+        texcoords[i*12+1] = uv_coords.w;
 
-        // Right face
-        0.0f, 0.0f,   // Vertex 1
-        1.0f, 0.0f,   // Vertex 2
-        1.0f, 1.0f,   // Vertex 3
+        texcoords[i*12+2] = uv_coords.z;
+        texcoords[i*12+3] = uv_coords.w;
 
-        1.0f, 1.0f,   // Vertex 3
-        0.0f, 1.0f,   // Vertex 4
-        0.0f, 0.0f,   // Vertex 1
+        texcoords[i*12+4] = uv_coords.z;
+        texcoords[i*12+5] = uv_coords.y;
 
-        // Back face
-        0.0f, 0.0f,   // Vertex 2
-        1.0f, 0.0f,   // Vertex 3
-        1.0f, 1.0f,   // Vertex 4
+        texcoords[i*12+6] = uv_coords.z;
+        texcoords[i*12+7] = uv_coords.y;
 
-        1.0f, 1.0f,   // Vertex 4
-        0.0f, 1.0f,   // Vertex 5
-        0.0f, 0.0f,   // Vertex 2
+        texcoords[i*12+8] = uv_coords.x;
+        texcoords[i*12+9] = uv_coords.y;
 
-        // Left face
-        0.0f, 0.0f,   // Vertex 3
-        1.0f, 0.0f,   // Vertex 4
-        1.0f, 1.0f,   // Vertex 5
+        texcoords[i*12+10] = uv_coords.x;
+        texcoords[i*12+11] = uv_coords.w;
 
-        1.0f, 1.0f,   // Vertex 5
-        0.0f, 1.0f,   // Vertex 6
-        0.0f, 0.0f,   // Vertex 3
-
-        // Bottom face
-        0.0f, 0.0f,   // Vertex 4
-        1.0f, 0.0f,   // Vertex 5
-        1.0f, 1.0f,   // Vertex 6
-
-        1.0f, 1.0f,   // Vertex 6
-        0.0f, 1.0f,   // Vertex 7
-        0.0f, 0.0f,   // Vertex 4
-
-        // Top face
-        0.0f, 0.0f,   // Vertex 5
-        1.0f, 0.0f,   // Vertex 6
-        1.0f, 1.0f,   // Vertex 7
-
-        1.0f, 1.0f,   // Vertex 7
-        0.0f, 1.0f,   // Vertex 4
-        0.0f, 0.0f,   // Vertex 5
-    };
+    }
 
     float normals[] = {
         0.0f, 0.0f, 1.0f,
@@ -170,16 +141,6 @@ void fuse_block_to_chunk(ChunkData *chunk_data, int x, int y, int z)
         -1.0f, 0.0f, 0.0f,
         -1.0f, 0.0f, 0.0f,
         -1.0f, 0.0f, 0.0f,
-    };
-
-    enum Faces
-    {
-        FRONT=0,
-        RIGHT,
-        BACK,
-        LEFT,
-        BOTTOM,
-        TOP
     };
 
     // i: up, j: forward, k: left
@@ -269,52 +230,9 @@ void fuse_block_to_chunk(ChunkData *chunk_data, int x, int y, int z)
             chunk_data->normals.append(normals[18*TOP+i*3+2]);
         }
     }
-
-    // for(int i = 0; i < 36; i++)
-    // {
-    //     vertices[3*i]   += x;
-    //     vertices[3*i+1] += y;
-    //     vertices[3*i+2] += z;
-
-    //     chunk_data->vertices.append(vertices[3*i]);
-    //     chunk_data->vertices.append(vertices[3*i+1]);
-    //     chunk_data->vertices.append(vertices[3*i+2]);
-    // }
-
-    // for(int i = 0; i < 36; i++)
-    // {
-    //     chunk_data->texcoords.append(texcoords[2*i]);
-    //     chunk_data->texcoords.append(texcoords[2*i+1]);
-    // }
-
-    // for(int i = 0; i < 36; i++)
-    // {
-    //     chunk_data->normals.append(normals[3*i]);
-    //     chunk_data->normals.append(normals[3*i+1]);
-    //     chunk_data->normals.append(normals[3*i+2]);
-    // }
-
-    // int k = chunk_data->indices.size/6;
-    // unsigned short indices[36];
-    // for (int i = 0; i < 36; i += 6)
-    // {
-    //     indices[i] = 4*k;
-    //     indices[i + 1] = 4*k + 1;
-    //     indices[i + 2] = 4*k + 2;
-    //     indices[i + 3] = 4*k;
-    //     indices[i + 4] = 4*k + 2;
-    //     indices[i + 5] = 4*k + 3;
-
-    //     k++;
-    // }
-
-    // for (int i = 0; i < 36; i++)
-    // {
-    //     chunk_data->indices.append(indices[i]);
-    // }
 }
 
-void make_model_from_chunk_data(ChunkData *chunk_data)
+void update_chunk_data_model(ChunkData *chunk_data)
 {
     Mesh mesh = {0};
 
@@ -333,13 +251,13 @@ void make_model_from_chunk_data(ChunkData *chunk_data)
     mesh.vertexCount = chunk_data->vertices.size/3;
     mesh.triangleCount = mesh.vertexCount/2;
 
-    UploadMesh(&mesh, false);
+    UploadMesh(&mesh, true);
     Model model = LoadModelFromMesh(mesh);
     chunk_data->finished_model = model;
     //UnloadMesh(mesh);
 }
 
-Chunk chunk_generate(int x, int z)
+Chunk chunk_generate(int x, int z, Atlas atlas)
 {
     Chunk chunk = {0};
     chunk.data = (ChunkData *)malloc(sizeof(*(chunk.data)));
@@ -351,9 +269,17 @@ Chunk chunk_generate(int x, int z)
         {
             for(int k = 0; k < CHUNK_SIZE; k++)
             {
-                if(i < 32)
+                if(i == 32 && rand()%6!=0)
                 {
                     chunk.data->blocks[i][j][k].type = BLOCK_TYPE_GRASS;
+                }
+                else if(i < 20)
+                {
+                    chunk.data->blocks[i][j][k].type = BLOCK_TYPE_STONE;
+                }
+                else if(i < 32)
+                {
+                    chunk.data->blocks[i][j][k].type = BLOCK_TYPE_DIRT;
                 }
                 else
                 {
@@ -374,12 +300,12 @@ Chunk chunk_generate(int x, int z)
             {
                 if(BLOCK_INFO[chunk.data->blocks[i][j][k].type].is_cube)
                 {
-                    fuse_block_to_chunk(chunk.data, j, i, k);
+                    fuse_block_to_chunk(chunk.data, j, i, k, atlas);
                 }
             }
         }
     }
-    make_model_from_chunk_data(chunk.data);
+    update_chunk_data_model(chunk.data);
 
     chunk.x = x;
     chunk.z = z;
@@ -401,45 +327,35 @@ void chunk_render(Atlas atlas, Chunk chunk)
     DrawModel(chunk.data->finished_model, {(float)chunk.x*CHUNK_SIZE, 0.f, (float)chunk.z*CHUNK_SIZE}, 1.f, WHITE);
 }
 
-void world_update(World *world, Atlas atlas)
-{
-    world_get_next_chunk(world, world->player.camera.position.x/CHUNK_SIZE,  world->player.camera.position.z/CHUNK_SIZE);
-
-    for(int i = 0; i < world->chunks.size; i++)
-    {
-        chunk_render(atlas, world->chunks[i]);
-    }
-}
-
-bool chunk_exists_in_world(World *world, int x, int z)
+Chunk* find_chunk_in_world(World *world, int x, int z)
 {
     for(int i = 0; i < world->chunks.size; i++)
     {
         if(world->chunks[i].x == x && world->chunks[i].z == z)
         {
-            return true;
+            return &(world->chunks[i]);
         }
     }
-    return false;
+    return 0;
 }
 
-void world_get_next_chunk(World *world, int x, int z, int depth)
+void get_next_chunk(World *world, int x, int z, Atlas atlas, int depth=0)
 {
-    if(chunk_exists_in_world(world, x, z))
+    if(find_chunk_in_world(world, x, z))
     {
         if(depth*depth*depth*depth > world->max_chunks)
         {
             return;
         }
 
-        world_get_next_chunk(world, x+1, z, depth+1);
-        world_get_next_chunk(world, x-1, z, depth+1);
-        world_get_next_chunk(world, x, z+1, depth+1);
-        world_get_next_chunk(world, x, z-1, depth+1);
+        get_next_chunk(world, x+1, z, atlas, depth+1);
+        get_next_chunk(world, x-1, z, atlas, depth+1);
+        get_next_chunk(world, x, z+1, atlas, depth+1);
+        get_next_chunk(world, x, z-1, atlas, depth+1);
     }
     else
     {
-        Chunk chunk = chunk_generate(x, z);
+        Chunk chunk = chunk_generate(x, z, atlas);
 
         if(world->chunks.size < world->max_chunks)
         {
@@ -451,5 +367,15 @@ void world_get_next_chunk(World *world, int x, int z, int depth)
             world->chunks[world->chunk_counter%world->max_chunks] = chunk;
         }
         world->chunk_counter++;
+    }
+}
+
+void world_update(World *world, Atlas atlas)
+{
+    get_next_chunk(world, world->player.camera.position.x/CHUNK_SIZE,  world->player.camera.position.z/CHUNK_SIZE, atlas);
+
+    for(int i = 0; i < world->chunks.size; i++)
+    {
+        chunk_render(atlas, world->chunks[i]);
     }
 }
