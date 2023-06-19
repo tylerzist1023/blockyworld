@@ -31,8 +31,8 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
 #endif
 {
     // Initialization
-    const int screenWidth = 1770;
-    const int screenHeight = 960;
+    const int screenWidth = 960;
+    const int screenHeight = 600;
 
     InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
     SetWindowState(FLAG_WINDOW_RESIZABLE);

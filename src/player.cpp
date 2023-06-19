@@ -71,7 +71,7 @@ void player_init(Player *player)
     player->camera.position = {0.f, 64.f, 0.f};
     player->camera.target = {0.f, 64.f, 1.f};
     player->camera.up = {0.f, 1.f, 0.f};
-    player->camera.fovy = 60.f;
+    player->camera.fovy = 80.f;
     player->camera.projection = CAMERA_PERSPECTIVE;
 }
 
