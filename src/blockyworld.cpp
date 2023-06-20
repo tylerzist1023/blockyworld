@@ -24,12 +24,20 @@ void print_vec3(Vector3 v)
     printf("{%f, %f, %f}\n", v.x, v.y, v.z);
 }
 
+void CustomLog(int msgType, const char *text, va_list args)
+{
+    return;
+}
+
 #if 1
 int main(int argc, char* argv[])
 #else
 int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 #endif
 {
+    SetTraceLogLevel(0);
+    SetTraceLogCallback(CustomLog);
+
     // Initialization
     const int screenWidth = 960;
     const int screenHeight = 600;
@@ -50,7 +58,7 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
     while (!WindowShouldClose()) // Detect window close button or ESC key
     {
         // Update
-        player_update(&(world.player));
+        player_update(&(world.player), &world);
 
         Vector2 mouse_delta = GetMouseDelta();
         float sensitivity = 1/8.0f;

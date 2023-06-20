@@ -7,9 +7,11 @@
 
 #include "player.h"
 #include "atlas.h"
+#include "noise.h"
 #include "world.h"
 
 #include "blockyworld.cpp"
 #include "player.cpp"
 #include "atlas.cpp"
+#include "noise.cpp"
 #include "world.cpp"

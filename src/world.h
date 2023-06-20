@@ -4,13 +4,13 @@
 
 enum BlockType
 {
-    BLOCK_TYPE_GRASS = 0,
+    BLOCK_TYPE_AIR = 0,
+    BLOCK_TYPE_GRASS,
     BLOCK_TYPE_DIRT,
     BLOCK_TYPE_STONE,
-    BLOCK_TYPE_AIR,
 };
 
-enum Faces
+enum BlockFace
 {
     FRONT=0,
     RIGHT,

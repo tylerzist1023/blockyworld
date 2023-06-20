@@ -1,4 +1,5 @@
 #include "player.h"
+#include "raylib.h "
 #include "rcamera.h"
 
 #define CAMERA_MOVE_SPEED                               0.5f
@@ -75,7 +76,12 @@ void player_init(Player *player)
     player->camera.projection = CAMERA_PERSPECTIVE;
 }
 
-void player_update(Player *player)
+void player_update(Player *player, World *world)
 {
     UpdateCameraModified(&(player->camera), CAMERA_FIRST_PERSON);
+
+    if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+    {
+        Ray ray = GetMouseRay(GetMousePosition(), player->camera);
+    }
 }
