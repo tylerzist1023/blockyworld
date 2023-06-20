@@ -3,7 +3,6 @@
 #include "noise.h"
 #include "raylib.h "
 #include "raylib.h"
-#include <algorithm>
 #include <stdlib.h>
 #include <string.h>
 
