@@ -1,4 +1,6 @@
 #include "player.h"
+#include "raymath.h"
+#include "world.h"
 #include "raylib.h "
 #include "rcamera.h"
 
@@ -80,8 +82,48 @@ void player_update(Player *player, World *world)
 {
     UpdateCameraModified(&(player->camera), CAMERA_FIRST_PERSON);
 
-    if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+    if(IsKeyPressed(KEY_SPACE))
     {
         Ray ray = GetMouseRay(GetMousePosition(), player->camera);
+        printf("%f,%f,%f\n", ray.position.x, ray.position.y, ray.position.z);
+
+        for(int i = 0; i < world->chunks.size; i++)
+        {
+            RayCollision collision_mesh = GetRayCollisionMesh(ray, world->chunks[i].data->finished_model.meshes[0], MatrixTranslate(world->chunks[i].x * CHUNK_SIZE, 0.f, world->chunks[i].z * CHUNK_SIZE));
+            if(collision_mesh.hit)
+            {
+                printf("Hit! x=%d, z=%d\n", world->chunks[i].x, world->chunks[i].z);
+                
+                // TODO: use some kind of quad tree thing maybe to optimize this
+                for(int j = 0; j < CHUNK_HEIGHT; j++)
+                {
+                    for(int k = 0; k < CHUNK_SIZE; k++)
+                    {
+                        for(int l = 0; l < CHUNK_SIZE; l++)
+                        {
+                            if(!BLOCK_INFO[world->chunks[i].data->blocks[j][k][l].type].is_cube)
+                            {
+                                continue;
+                            }
+
+                            Vector3 block_location = {world->chunks[i].x * CHUNK_SIZE + k, j, world->chunks[i].z * CHUNK_SIZE + l};
+                            RayCollision collision_block = GetRayCollisionBox(ray, 
+                            {
+                                block_location,
+                                Vector3AddValue(block_location, 1.f),
+                            });
+                            if(collision_block.hit)
+                            {
+                                printf("Hit block {%f, %f, %f}\n", block_location.x, block_location.y, block_location.z);
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                break;
+
+            }
+        }
     }
 }

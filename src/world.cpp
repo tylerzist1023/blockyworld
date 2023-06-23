@@ -1,22 +1,11 @@
 #include "world.h"
 #include "atlas.h"
 #include "noise.h"
-#include "raylib.h "
 #include "raylib.h"
 #include <stdlib.h>
 #include <string.h>
 
-static Model block_model = {0};
-
-static const BlockInfo BLOCK_INFO[] = 
-{
-    {BLOCK_TYPE_AIR, {0,0,0,0,0,0}, 1, false},
-    {BLOCK_TYPE_GRASS, {2,2,2,2,1,0}, 1, true},
-    {BLOCK_TYPE_DIRT, {1,1,1,1,1,1}, 1, true},
-    {BLOCK_TYPE_STONE, {3,3,3,3,3,3}, 1, true},
-};
-
-const float CUBE_VERTICES[] = 
+static const float CUBE_VERTICES[] = 
 {
     // Front face
     -0.5f, -0.5f, 0.5f,   // Vertex 0

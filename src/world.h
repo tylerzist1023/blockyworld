@@ -29,6 +29,15 @@ struct BlockInfo
     bool is_cube;
 };
 
+static const BlockInfo BLOCK_INFO[] = 
+{
+    {BLOCK_TYPE_AIR, {0,0,0,0,0,0}, 1, false},
+    {BLOCK_TYPE_GRASS, {2,2,2,2,1,0}, 1, true},
+    {BLOCK_TYPE_DIRT, {1,1,1,1,1,1}, 1, true},
+    {BLOCK_TYPE_STONE, {3,3,3,3,3,3}, 1, true},
+};
+
+
 // An instance of a block (will change once we get the world stuff set up)
 struct Block
 {
