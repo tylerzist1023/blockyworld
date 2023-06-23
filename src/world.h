@@ -64,6 +64,7 @@ struct Chunk
     ChunkData *data = 0;
 };
 
+void chunk_update_model(ChunkData *chunk_data, Atlas atlas);
 Chunk chunk_generate(int x, int z);
 void chunk_destroy(Chunk chunk);
 void chunk_render(Atlas atlas, Chunk chunk);
@@ -78,3 +79,5 @@ struct World
 };
 
 void world_update(World *world, Atlas atlas);
+void world_update_neighbors(World *world, Chunk chunk, Atlas atlas, bool updating_neighbors=false);
+Chunk *world_find_chunk(World *world, int x, int z);

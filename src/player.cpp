@@ -78,51 +78,67 @@ void player_init(Player *player)
     player->camera.projection = CAMERA_PERSPECTIVE;
 }
 
-void player_update(Player *player, World *world)
+void player_update(Player *player, World *world, Atlas atlas)
 {
     UpdateCameraModified(&(player->camera), CAMERA_FIRST_PERSON);
 
-    if(IsKeyPressed(KEY_SPACE))
+    bool place_block = false;
+    if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || (place_block=IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)))
     {
         Ray ray = GetMouseRay(GetMousePosition(), player->camera);
-        printf("%f,%f,%f\n", ray.position.x, ray.position.y, ray.position.z);
 
         for(int i = 0; i < world->chunks.size; i++)
         {
-            RayCollision collision_mesh = GetRayCollisionMesh(ray, world->chunks[i].data->finished_model.meshes[0], MatrixTranslate(world->chunks[i].x * CHUNK_SIZE, 0.f, world->chunks[i].z * CHUNK_SIZE));
+            // TODO: When we make the chunk generation multithreaded, remember that this Chunk pointer needs to be accounted for!
+            // It doesn't matter if we copy this by value or not because of the chunk data.
+            Chunk *our_chunk = &(world->chunks[i]);
+
+            Matrix chunk_transform = MatrixTranslate(our_chunk->x * CHUNK_SIZE, 0.f, our_chunk->z * CHUNK_SIZE);
+            RayCollision collision_mesh = GetRayCollisionMesh(ray, our_chunk->data->finished_model.meshes[0], chunk_transform);
+
+            collision_mesh.point = Vector3Subtract(collision_mesh.point, Vector3Scale(collision_mesh.normal, place_block ? -.5f : .5f));
+
             if(collision_mesh.hit)
             {
-                printf("Hit! x=%d, z=%d\n", world->chunks[i].x, world->chunks[i].z);
-                
-                // TODO: use some kind of quad tree thing maybe to optimize this
-                for(int j = 0; j < CHUNK_HEIGHT; j++)
-                {
-                    for(int k = 0; k < CHUNK_SIZE; k++)
-                    {
-                        for(int l = 0; l < CHUNK_SIZE; l++)
-                        {
-                            if(!BLOCK_INFO[world->chunks[i].data->blocks[j][k][l].type].is_cube)
-                            {
-                                continue;
-                            }
+                int blockx = (int)(collision_mesh.point.x - (our_chunk->x  * CHUNK_SIZE));
+                int blocky = (int)(collision_mesh.point.y);
+                int blockz = (int)(collision_mesh.point.z - (our_chunk->z * CHUNK_SIZE));
 
-                            Vector3 block_location = {world->chunks[i].x * CHUNK_SIZE + k, j, world->chunks[i].z * CHUNK_SIZE + l};
-                            RayCollision collision_block = GetRayCollisionBox(ray, 
-                            {
-                                block_location,
-                                Vector3AddValue(block_location, 1.f),
-                            });
-                            if(collision_block.hit)
-                            {
-                                printf("Hit block {%f, %f, %f}\n", block_location.x, block_location.y, block_location.z);
-                                break;
-                            }
-                        }
+                // Fixes a bug where placing a block on the edge of a chunk wraps around the chunk.
+                if(place_block)
+                {
+                    if(blockx < 0)
+                    {
+                        our_chunk = world_find_chunk(world, our_chunk->x-1, our_chunk->z);
+                        blockx += CHUNK_SIZE;
+                    }
+                    else if(blockx >= CHUNK_SIZE)
+                    {
+                        our_chunk = world_find_chunk(world, our_chunk->x+1, our_chunk->z);
+                        blockx -= CHUNK_SIZE;
+                    }
+                    else if(blockz < 0)
+                    {
+                        our_chunk = world_find_chunk(world, our_chunk->x, our_chunk->z-1);
+                        blockz += CHUNK_SIZE;
+                    }
+                    else if(blockz >= CHUNK_SIZE)
+                    {
+                        our_chunk = world_find_chunk(world, our_chunk->x, our_chunk->z+1);
+                        blockz -= CHUNK_SIZE;
+
+                    }
+                    if(!our_chunk)
+                    {
+                        break;
                     }
                 }
 
-                break;
+                our_chunk->data->blocks[blocky][blockx][blockz].type = place_block ? BLOCK_TYPE_STONE : BLOCK_TYPE_AIR;
+                chunk_update_model(our_chunk->data, atlas);
+                world_update_neighbors(world, *our_chunk, atlas);
 
+                break;
             }
         }
     }

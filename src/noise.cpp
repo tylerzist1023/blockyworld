@@ -13,18 +13,18 @@ static int hash[] = {208,34,231,213,32,248,233,56,161,78,24,140,71,48,140,254,24
                      135,176,183,191,253,115,184,21,233,58,129,233,142,39,128,211,118,137,139,255,
                      114,20,218,113,154,27,127,246,250,1,8,198,250,209,92,222,173,21,88,102,219};
 
-int noise2(int x, int y)
+static inline int noise2(int x, int y)
 {
     int tmp = hash[(y + SEED) % 256];
     return hash[(tmp + x) % 256];
 }
 
-float lin_inter(float x, float y, float s)
+static inline float lin_inter(float x, float y, float s)
 {
     return x + s * (y-x);
 }
 
-float smooth_inter(float x, float y, float s)
+static inline float smooth_inter(float x, float y, float s)
 {
     return lin_inter(x, y, s * s * (3-2*s));
 }
@@ -44,7 +44,7 @@ float noise2d(float x, float y)
     return smooth_inter(low, high, y_frac);
 }
 
-float abs_value(float a)
+static inline float abs_value(float a)
 {
 	return a > 0 ? a : -a;
 }

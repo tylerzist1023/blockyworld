@@ -7,6 +7,7 @@ struct Player
 };
 
 struct World;
+struct Atlas;
 
 void player_init(Player *player);
-void player_update(Player *player, World *world);
+void player_update(Player *player, World *world, Atlas atlas);

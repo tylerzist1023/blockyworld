@@ -8,61 +8,61 @@
 static const float CUBE_VERTICES[] = 
 {
     // Front face
-    -0.5f, -0.5f, 0.5f,   // Vertex 0
-     0.5f, -0.5f, 0.5f,   // Vertex 1
-     0.5f,  0.5f, 0.5f,   // Vertex 2
+    0.0f, 0.0f, 1.0f,   // Vertex 0
+     1.0f, 0.0f, 1.0f,   // Vertex 1
+     1.0f,  1.0f, 1.0f,   // Vertex 2
 
-     0.5f,  0.5f, 0.5f,   // Vertex 2
-    -0.5f,  0.5f, 0.5f,   // Vertex 3
-    -0.5f, -0.5f, 0.5f,   // Vertex 0
+     1.0f,  1.0f, 1.0f,   // Vertex 2
+    0.0f,  1.0f, 1.0f,   // Vertex 3
+    0.0f, 0.0f, 1.0f,   // Vertex 0
 
     // Right face
-     0.5f, -0.5f, 0.5f,   // Vertex 1
-     0.5f, -0.5f, -0.5f,  // Vertex 2
-     0.5f,  0.5f, -0.5f,  // Vertex 3
+     1.0f, 0.0f, 1.0f,   // Vertex 1
+     1.0f, 0.0f, 0.0f,  // Vertex 2
+     1.0f,  1.0f, 0.0f,  // Vertex 3
 
-     0.5f,  0.5f, -0.5f,  // Vertex 3
-     0.5f,  0.5f, 0.5f,   // Vertex 4
-     0.5f, -0.5f, 0.5f,   // Vertex 1
+     1.0f,  1.0f, 0.0f,  // Vertex 3
+     1.0f,  1.0f, 1.0f,   // Vertex 4
+     1.0f, 0.0f, 1.0f,   // Vertex 1
 
     // Back face
-     0.5f, -0.5f, -0.5f,  // Vertex 2
-    -0.5f, -0.5f, -0.5f,  // Vertex 3
-    -0.5f,  0.5f, -0.5f,  // Vertex 4
+     1.0f, 0.0f, 0.0f,  // Vertex 2
+    0.0f, 0.0f, 0.0f,  // Vertex 3
+    0.0f,  1.0f, 0.0f,  // Vertex 4
 
-    -0.5f,  0.5f, -0.5f,  // Vertex 4
-     0.5f,  0.5f, -0.5f,  // Vertex 5
-     0.5f, -0.5f, -0.5f,  // Vertex 2
+    0.0f,  1.0f, 0.0f,  // Vertex 4
+     1.0f,  1.0f, 0.0f,  // Vertex 5
+     1.0f, 0.0f, 0.0f,  // Vertex 2
 
     // Left face
-    -0.5f, -0.5f, -0.5f,  // Vertex 3
-    -0.5f, -0.5f, 0.5f,   // Vertex 4
-    -0.5f,  0.5f, 0.5f,   // Vertex 5
+    0.0f, 0.0f, 0.0f,  // Vertex 3
+    0.0f, 0.0f, 1.0f,   // Vertex 4
+    0.0f,  1.0f, 1.0f,   // Vertex 5
 
-    -0.5f,  0.5f, 0.5f,   // Vertex 5
-    -0.5f,  0.5f, -0.5f,  // Vertex 6
-    -0.5f, -0.5f, -0.5f,  // Vertex 3
+    0.0f,  1.0f, 1.0f,   // Vertex 5
+    0.0f,  1.0f, 0.0f,  // Vertex 6
+    0.0f, 0.0f, 0.0f,  // Vertex 3
 
     // Bottom face
-    -0.5f, -0.5f, -0.5f,  // Vertex 4
-     0.5f, -0.5f, -0.5f,  // Vertex 5
-     0.5f, -0.5f, 0.5f,   // Vertex 6
+    0.0f, 0.0f, 0.0f,  // Vertex 4
+     1.0f, 0.0f, 0.0f,  // Vertex 5
+     1.0f, 0.0f, 1.0f,   // Vertex 6
 
-     0.5f, -0.5f, 0.5f,   // Vertex 6
-    -0.5f, -0.5f, 0.5f,   // Vertex 7
-    -0.5f, -0.5f, -0.5f,  // Vertex 4
+     1.0f, 0.0f, 1.0f,   // Vertex 6
+    0.0f, 0.0f, 1.0f,   // Vertex 7
+    0.0f, 0.0f, 0.0f,  // Vertex 4
 
     // Top face
-    -0.5f,  0.5f, 0.5f,   // Vertex 5
-     0.5f,  0.5f, 0.5f,   // Vertex 6
-     0.5f,  0.5f, -0.5f,  // Vertex 7
+    0.0f,  1.0f, 1.0f,   // Vertex 5
+     1.0f,  1.0f, 1.0f,   // Vertex 6
+     1.0f,  1.0f, 0.0f,  // Vertex 7
 
-     0.5f,  0.5f, -0.5f,  // Vertex 7
-    -0.5f,  0.5f, -0.5f,  // Vertex 4
-    -0.5f,  0.5f, 0.5f,   // Vertex 5
+     1.0f,  1.0f, 0.0f,  // Vertex 7
+    0.0f,  1.0f, 0.0f,  // Vertex 4
+    0.0f,  1.0f, 1.0f,   // Vertex 5
 };
 
-float CUBE_NORMALS[] = 
+static const float CUBE_NORMALS[] = 
 {
     0.0f, 0.0f, 1.0f,
     0.0f, 0.0f, 1.0f,
@@ -107,7 +107,7 @@ float CUBE_NORMALS[] =
     0.0f, -1.0f, 0.0f,
 };
 
-void fuse_block_to_chunk(ChunkData *chunk_data, int x, int y, int z, Atlas atlas)
+static inline void fuse_block_to_chunk(ChunkData *chunk_data, int x, int y, int z, Atlas atlas)
 {
     float texcoords[70];
     for(int i = 0; i < 6; i++)
@@ -222,7 +222,7 @@ void fuse_block_to_chunk(ChunkData *chunk_data, int x, int y, int z, Atlas atlas
     }
 }
 
-void generate_chunk_data_model(ChunkData *chunk_data)
+static inline void generate_chunk_data_model(ChunkData *chunk_data)
 {
     Mesh mesh = {0};
 
@@ -239,7 +239,7 @@ void generate_chunk_data_model(ChunkData *chunk_data)
     //memcpy(mesh.indices, chunk_data->indices.data, chunk_data->indices.size*sizeof(unsigned short));
 
     mesh.vertexCount = chunk_data->vertices.size/3;
-    mesh.triangleCount = mesh.vertexCount/2;
+    mesh.triangleCount = mesh.vertexCount/3;
 
     if(chunk_data->finished_model.meshCount != 0)
     {
@@ -252,7 +252,7 @@ void generate_chunk_data_model(ChunkData *chunk_data)
     //UnloadMesh(mesh);
 }
 
-void add_face_to_chunk(ChunkData *chunk_data, Atlas atlas, BlockFace face, int x, int y, int z)
+static inline void add_face_to_chunk(ChunkData *chunk_data, Atlas atlas, BlockFace face, int x, int y, int z)
 {  
     float texcoords[12];
 
@@ -285,6 +285,28 @@ void add_face_to_chunk(ChunkData *chunk_data, Atlas atlas, BlockFace face, int x
     {
         chunk_data->normals.append(CUBE_NORMALS[i]);
     }
+}
+
+void chunk_update_model(ChunkData *chunk_data, Atlas atlas)
+{
+    chunk_data->vertices.clear();
+    chunk_data->normals.clear();
+    chunk_data->texcoords.clear();
+
+    for(int i = 0; i < CHUNK_HEIGHT; i++)
+    {
+        for(int j = 0; j < CHUNK_SIZE; j++)
+        {
+            for(int k = 0; k < CHUNK_SIZE; k++)
+            {
+                if(BLOCK_INFO[chunk_data->blocks[i][j][k].type].is_cube)
+                {
+                    fuse_block_to_chunk(chunk_data, j, i, k, atlas);
+                }
+            }
+        }
+    }
+    generate_chunk_data_model(chunk_data);
 }
 
 Chunk chunk_generate(int x, int z, Atlas atlas)
@@ -327,20 +349,7 @@ Chunk chunk_generate(int x, int z, Atlas atlas)
         }
     }
 
-    for(int i = 0; i < CHUNK_HEIGHT; i++)
-    {
-        for(int j = 0; j < CHUNK_SIZE; j++)
-        {
-            for(int k = 0; k < CHUNK_SIZE; k++)
-            {
-                if(BLOCK_INFO[chunk.data->blocks[i][j][k].type].is_cube)
-                {
-                    fuse_block_to_chunk(chunk.data, j, i, k, atlas);
-                }
-            }
-        }
-    }
-    generate_chunk_data_model(chunk.data);
+    chunk_update_model(chunk.data, atlas);
 
     chunk.x = x;
     chunk.z = z;
@@ -364,7 +373,7 @@ void chunk_render(Atlas atlas, Chunk chunk)
     DrawModel(chunk.data->finished_model, {(float)chunk.x*CHUNK_SIZE, 0.f, (float)chunk.z*CHUNK_SIZE}, 1.f, WHITE);
 }
 
-Chunk *find_chunk_in_world(World *world, int x, int z)
+Chunk *world_find_chunk(World *world, int x, int z)
 {
     for(int i = 0; i < world->chunks.size; i++)
     {
@@ -376,7 +385,7 @@ Chunk *find_chunk_in_world(World *world, int x, int z)
     return 0;
 }
 
-void add_neighbor_edge_faces(Chunk chunk, Chunk neighbor, BlockFace face, Atlas atlas)
+static inline void add_neighbor_edge_faces(Chunk chunk, Chunk neighbor, BlockFace face, Atlas atlas)
 {
     int chunk_edge=0, neighbor_edge=0;
     if(face == FRONT || face == RIGHT)
@@ -418,14 +427,14 @@ void add_neighbor_edge_faces(Chunk chunk, Chunk neighbor, BlockFace face, Atlas 
     }
 }
 
-void update_neighboring_chunk_models(World *world, Chunk chunk, Atlas atlas, bool updating_neighbors=false)
+void world_update_neighbors(World *world, Chunk chunk, Atlas atlas, bool updating_neighbors)
 {
     Chunk *neighbors[4] =
     {
-        find_chunk_in_world(world, chunk.x, chunk.z-1),
-        find_chunk_in_world(world, chunk.x, chunk.z+1),
-        find_chunk_in_world(world, chunk.x+1, chunk.z),
-        find_chunk_in_world(world, chunk.x-1, chunk.z),
+        world_find_chunk(world, chunk.x, chunk.z-1),
+        world_find_chunk(world, chunk.x, chunk.z+1),
+        world_find_chunk(world, chunk.x+1, chunk.z),
+        world_find_chunk(world, chunk.x-1, chunk.z),
     };
     BlockFace faces[4] =
     {
@@ -440,14 +449,14 @@ void update_neighboring_chunk_models(World *world, Chunk chunk, Atlas atlas, boo
         if(neighbors[i] == 0) continue;
         add_neighbor_edge_faces(chunk, *(neighbors[i]), faces[i], atlas);
         generate_chunk_data_model(neighbors[i]->data);
-        if(!updating_neighbors) update_neighboring_chunk_models(world, *(neighbors[i]), atlas, true);
+        if(!updating_neighbors) world_update_neighbors(world, *(neighbors[i]), atlas, true);
     }
 
 }
 
-void get_next_chunk(World *world, int x, int z, Atlas atlas, int depth=0)
+static inline void get_next_chunk(World *world, int x, int z, Atlas atlas, int depth=0)
 {
-    if(find_chunk_in_world(world, x, z))
+    if(world_find_chunk(world, x, z))
     {
         if(depth*depth*depth*depth > world->max_chunks)
         {
@@ -473,7 +482,7 @@ void get_next_chunk(World *world, int x, int z, Atlas atlas, int depth=0)
             world->chunks[world->chunk_counter%world->max_chunks] = chunk;
         }
         world->chunk_counter++;
-        update_neighboring_chunk_models(world, chunk, atlas);
+        world_update_neighbors(world, chunk, atlas);
     }
 }
 

@@ -42,7 +42,7 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
     const int screenWidth = 960;
     const int screenHeight = 600;
 
-    InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
+    InitWindow(screenWidth, screenHeight, "Very Original Game Concept");
     SetWindowState(FLAG_WINDOW_RESIZABLE);
 
     SetTargetFPS(60); // Set our game to run at 60 frames-per-second
@@ -58,11 +58,7 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
     while (!WindowShouldClose()) // Detect window close button or ESC key
     {
         // Update
-        player_update(&(world.player), &world);
-
-        Vector2 mouse_delta = GetMouseDelta();
-        float sensitivity = 1/8.0f;
-        SetMousePosition(GetScreenWidth()/2, GetScreenHeight()/2);
+        
 
         // print_vec3(player.camera.position);
 
@@ -73,16 +69,11 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
 
             BeginMode3D(world.player.camera);
 
-                rlBegin(RL_TRIANGLES);
+                player_update(&(world.player), &world, atlas);
 
-                    rlColor3f( 1, 0, 0 ); // red
-                    rlVertex3f( 0, 0.9, 1 );
-                    rlColor3f( 0, 1, 0 ); // green
-                    rlVertex3f( 0.8, -0.8, 1 );
-                    rlColor3f( 0, 0, 1 ); // blue
-                    rlVertex3f( -0.8, -0.8, 1 );
-
-                rlEnd(); 
+                Vector2 mouse_delta = GetMouseDelta();
+                float sensitivity = 1/8.0f;
+                SetMousePosition(GetScreenWidth()/2, GetScreenHeight()/2);
 
                 world_update(&world, atlas);
 
