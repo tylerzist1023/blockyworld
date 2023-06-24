@@ -483,16 +483,16 @@ void world_update_block(World *world, Chunk chunk, Atlas atlas, int x, int y, in
     chunk_update_model(chunk.data, atlas);
     world_update_neighbors(world, chunk, atlas);
 
-    if(!chunk.history)
+    ChunkEditHistory *history = world_find_edit_history(world, chunk.x, chunk.z);
+    if(!history)
     {
-        chunk.history = world_find_edit_history(world, chunk.x, chunk.z);
-        if(!chunk.history)
-        {
-            world->histories.append({chunk.x, chunk.z, {0}});
-        }
+        world->histories.append({chunk.x, chunk.z, {0}});
+        world->histories[world->histories.size-1].edits.append({x,y,z,type});
     }
-    chunk.history = &(world->histories[world->histories.size-1]);
-    chunk.history->edits.append({x,y,z,type});
+    else
+    {
+        history->edits.append({x,y,z,type});
+    }
 }
 
 static inline void get_next_chunk(World *world, int x, int z, Atlas atlas, int depth=0)

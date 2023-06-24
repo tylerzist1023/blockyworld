@@ -40,23 +40,17 @@ static const BlockInfo BLOCK_INFO[] =
 // An instance of a block (will change once we get the world stuff set up)
 struct Block
 {
-    BlockType type;
     int x,y,z;
+    BlockType type;
 };
 
 #define CHUNK_HEIGHT 128
 #define CHUNK_SIZE 16
 
-struct ChunkEdit
-{
-    int x,y,z;
-    BlockType type;
-};
-
 struct ChunkEditHistory
 {
     int x,z;
-    Array<ChunkEdit> edits;
+    Array<Block> edits;
 };
 
 struct ChunkData
@@ -73,7 +67,6 @@ struct Chunk
 {
     int x=0,z=0;
     ChunkData *data = 0;
-    ChunkEditHistory *history = 0;
 };
 
 void chunk_update_model(ChunkData *chunk_data, Atlas atlas);
@@ -85,7 +78,7 @@ struct World
 {
     // TODO: Use some kind of hash table. And make it so we don't regenerate block data every time a chunk gets reloaded in memory.
     Array<Chunk> chunks;
-    int max_chunks = 64;
+    int max_chunks = 32;
     int chunk_counter = 0;
 
     Array<ChunkEditHistory> histories;
