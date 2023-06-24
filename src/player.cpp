@@ -87,6 +87,11 @@ void player_update(Player *player, World *world, Atlas atlas)
     {
         Ray ray = GetMouseRay(GetMousePosition(), player->camera);
 
+        // We need to look for the chunk that is closest to the player, or the raycast will collide with other chunks, where the raycast will have to travel through other chunks to reach, which is not what we want!
+        Chunk *closest_chunk = 0;
+        RayCollision closest_collision_mesh = {0};
+        closest_collision_mesh.distance = INFINITY;
+
         for(int i = 0; i < world->chunks.size; i++)
         {
             // TODO: When we make the chunk generation multithreaded, remember that this Chunk pointer needs to be accounted for!
@@ -96,50 +101,58 @@ void player_update(Player *player, World *world, Atlas atlas)
             Matrix chunk_transform = MatrixTranslate(our_chunk->x * CHUNK_SIZE, 0.f, our_chunk->z * CHUNK_SIZE);
             RayCollision collision_mesh = GetRayCollisionMesh(ray, our_chunk->data->finished_model.meshes[0], chunk_transform);
 
+            // We add the mesh's normal to the collision point so it falls on the inside of the block, so when we do the div, it will guarantee the correct block is selected.
             collision_mesh.point = Vector3Subtract(collision_mesh.point, Vector3Scale(collision_mesh.normal, place_block ? -.5f : .5f));
 
-            if(collision_mesh.hit)
+            if(collision_mesh.hit && collision_mesh.distance < closest_collision_mesh.distance)
             {
-                int blockx = (int)(collision_mesh.point.x - (our_chunk->x  * CHUNK_SIZE));
-                int blocky = (int)(collision_mesh.point.y);
-                int blockz = (int)(collision_mesh.point.z - (our_chunk->z * CHUNK_SIZE));
-
-                // Fixes a bug where placing a block on the edge of a chunk wraps around the chunk.
-                if(place_block)
-                {
-                    if(blockx < 0)
-                    {
-                        our_chunk = world_find_chunk(world, our_chunk->x-1, our_chunk->z);
-                        blockx += CHUNK_SIZE;
-                    }
-                    else if(blockx >= CHUNK_SIZE)
-                    {
-                        our_chunk = world_find_chunk(world, our_chunk->x+1, our_chunk->z);
-                        blockx -= CHUNK_SIZE;
-                    }
-                    else if(blockz < 0)
-                    {
-                        our_chunk = world_find_chunk(world, our_chunk->x, our_chunk->z-1);
-                        blockz += CHUNK_SIZE;
-                    }
-                    else if(blockz >= CHUNK_SIZE)
-                    {
-                        our_chunk = world_find_chunk(world, our_chunk->x, our_chunk->z+1);
-                        blockz -= CHUNK_SIZE;
-
-                    }
-                    if(!our_chunk)
-                    {
-                        break;
-                    }
-                }
-
-                our_chunk->data->blocks[blocky][blockx][blockz].type = place_block ? BLOCK_TYPE_STONE : BLOCK_TYPE_AIR;
-                chunk_update_model(our_chunk->data, atlas);
-                world_update_neighbors(world, *our_chunk, atlas);
-
-                break;
+                closest_chunk = our_chunk;
+                closest_collision_mesh = collision_mesh;
             }
         }
+
+        if(closest_chunk)
+        {
+            int blockx = (int)(closest_collision_mesh.point.x - (closest_chunk->x  * CHUNK_SIZE));
+            int blocky = (int)(closest_collision_mesh.point.y);
+            int blockz = (int)(closest_collision_mesh.point.z - (closest_chunk->z * CHUNK_SIZE));
+
+            // Fixes a bug where placing a block on the edge of a chunk wraps around the chunk.
+            if(place_block)
+            {
+                if(blockx < 0)
+                {
+                    closest_chunk = world_find_chunk(world, closest_chunk->x-1, closest_chunk->z);
+                    blockx += CHUNK_SIZE;
+                }
+                else if(blockx >= CHUNK_SIZE)
+                {
+                    closest_chunk = world_find_chunk(world, closest_chunk->x+1, closest_chunk->z);
+                    blockx -= CHUNK_SIZE;
+                }
+                else if(blockz < 0)
+                {
+                    closest_chunk = world_find_chunk(world, closest_chunk->x, closest_chunk->z-1);
+                    blockz += CHUNK_SIZE;
+                }
+                else if(blockz >= CHUNK_SIZE)
+                {
+                    closest_chunk = world_find_chunk(world, closest_chunk->x, closest_chunk->z+1);
+                    blockz -= CHUNK_SIZE;
+
+                }
+                else if(blocky < 0 || blocky >= CHUNK_HEIGHT)
+                {
+                    goto dontmodify;
+                }
+                if(!closest_chunk)
+                {
+                    goto dontmodify;
+                }
+            }
+
+            world_update_block(world, *closest_chunk, atlas, blockx, blocky, blockz, place_block ? BLOCK_TYPE_STONE : BLOCK_TYPE_AIR);
+        }
+dontmodify:;
     }
 }

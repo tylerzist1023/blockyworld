@@ -32,7 +32,7 @@ struct Array
         size = min(new_capacity, size);
     }
 
-    inline void append(T x)
+    inline T append(T x)
     {
         if(capacity == 0)
         {
@@ -43,6 +43,7 @@ struct Array
             resize(capacity*2);
         }
         data[size++] = x;
+        return x;
     }
 
     inline void remove(int i)

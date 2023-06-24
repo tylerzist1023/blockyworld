@@ -37,7 +37,6 @@ static const BlockInfo BLOCK_INFO[] =
     {BLOCK_TYPE_STONE, {3,3,3,3,3,3}, 1, true},
 };
 
-
 // An instance of a block (will change once we get the world stuff set up)
 struct Block
 {
@@ -47,6 +46,18 @@ struct Block
 
 #define CHUNK_HEIGHT 128
 #define CHUNK_SIZE 16
+
+struct ChunkEdit
+{
+    int x,y,z;
+    BlockType type;
+};
+
+struct ChunkEditHistory
+{
+    int x,z;
+    Array<ChunkEdit> edits;
+};
 
 struct ChunkData
 {
@@ -62,18 +73,22 @@ struct Chunk
 {
     int x=0,z=0;
     ChunkData *data = 0;
+    ChunkEditHistory *history = 0;
 };
 
 void chunk_update_model(ChunkData *chunk_data, Atlas atlas);
-Chunk chunk_generate(int x, int z);
+Chunk chunk_generate(int x, int z, Atlas atlas, ChunkEditHistory *history);
 void chunk_destroy(Chunk chunk);
 void chunk_render(Atlas atlas, Chunk chunk);
 
 struct World
 {
+    // TODO: Use some kind of hash table. And make it so we don't regenerate block data every time a chunk gets reloaded in memory.
     Array<Chunk> chunks;
     int max_chunks = 64;
     int chunk_counter = 0;
+
+    Array<ChunkEditHistory> histories;
 
     Player player;
 };
@@ -81,3 +96,5 @@ struct World
 void world_update(World *world, Atlas atlas);
 void world_update_neighbors(World *world, Chunk chunk, Atlas atlas, bool updating_neighbors=false);
 Chunk *world_find_chunk(World *world, int x, int z);
+ChunkEditHistory *world_find_edit_history(World *world, int x, int z);
+void world_update_block(World *world, Chunk chunk, Atlas atlas, int x, int y, int z, BlockType type);

@@ -8,58 +8,58 @@
 static const float CUBE_VERTICES[] = 
 {
     // Front face
-    0.0f, 0.0f, 1.0f,   // Vertex 0
-     1.0f, 0.0f, 1.0f,   // Vertex 1
-     1.0f,  1.0f, 1.0f,   // Vertex 2
+    0.0f, 0.0f, 1.0f, // Vertex 0
+    1.0f, 0.0f, 1.0f, // Vertex 1
+    1.0f, 1.0f, 1.0f, // Vertex 2
 
-     1.0f,  1.0f, 1.0f,   // Vertex 2
-    0.0f,  1.0f, 1.0f,   // Vertex 3
-    0.0f, 0.0f, 1.0f,   // Vertex 0
+    1.0f, 1.0f, 1.0f, // Vertex 2
+    0.0f, 1.0f, 1.0f, // Vertex 3
+    0.0f, 0.0f, 1.0f, // Vertex 0
 
     // Right face
-     1.0f, 0.0f, 1.0f,   // Vertex 1
-     1.0f, 0.0f, 0.0f,  // Vertex 2
-     1.0f,  1.0f, 0.0f,  // Vertex 3
+    1.0f, 0.0f, 1.0f, // Vertex 1
+    1.0f, 0.0f, 0.0f, // Vertex 2
+    1.0f, 1.0f, 0.0f, // Vertex 3
 
-     1.0f,  1.0f, 0.0f,  // Vertex 3
-     1.0f,  1.0f, 1.0f,   // Vertex 4
-     1.0f, 0.0f, 1.0f,   // Vertex 1
+    1.0f, 1.0f, 0.0f, // Vertex 3
+    1.0f, 1.0f, 1.0f, // Vertex 4
+    1.0f, 0.0f, 1.0f, // Vertex 1
 
     // Back face
-     1.0f, 0.0f, 0.0f,  // Vertex 2
-    0.0f, 0.0f, 0.0f,  // Vertex 3
-    0.0f,  1.0f, 0.0f,  // Vertex 4
+    1.0f, 0.0f, 0.0f, // Vertex 2
+    0.0f, 0.0f, 0.0f, // Vertex 3
+    0.0f, 1.0f, 0.0f, // Vertex 4
 
-    0.0f,  1.0f, 0.0f,  // Vertex 4
-     1.0f,  1.0f, 0.0f,  // Vertex 5
-     1.0f, 0.0f, 0.0f,  // Vertex 2
+    0.0f, 1.0f, 0.0f, // Vertex 4
+    1.0f, 1.0f, 0.0f, // Vertex 5
+    1.0f, 0.0f, 0.0f, // Vertex 2
 
     // Left face
-    0.0f, 0.0f, 0.0f,  // Vertex 3
-    0.0f, 0.0f, 1.0f,   // Vertex 4
-    0.0f,  1.0f, 1.0f,   // Vertex 5
+    0.0f, 0.0f, 0.0f, // Vertex 3
+    0.0f, 0.0f, 1.0f, // Vertex 4
+    0.0f, 1.0f, 1.0f, // Vertex 5
 
-    0.0f,  1.0f, 1.0f,   // Vertex 5
-    0.0f,  1.0f, 0.0f,  // Vertex 6
-    0.0f, 0.0f, 0.0f,  // Vertex 3
+    0.0f, 1.0f, 1.0f, // Vertex 5
+    0.0f, 1.0f, 0.0f, // Vertex 6
+    0.0f, 0.0f, 0.0f, // Vertex 3
 
     // Bottom face
-    0.0f, 0.0f, 0.0f,  // Vertex 4
-     1.0f, 0.0f, 0.0f,  // Vertex 5
-     1.0f, 0.0f, 1.0f,   // Vertex 6
+    0.0f, 0.0f, 0.0f, // Vertex 4
+    1.0f, 0.0f, 0.0f, // Vertex 5
+    1.0f, 0.0f, 1.0f, // Vertex 6
 
-     1.0f, 0.0f, 1.0f,   // Vertex 6
-    0.0f, 0.0f, 1.0f,   // Vertex 7
-    0.0f, 0.0f, 0.0f,  // Vertex 4
+    1.0f, 0.0f, 1.0f, // Vertex 6
+    0.0f, 0.0f, 1.0f, // Vertex 7
+    0.0f, 0.0f, 0.0f, // Vertex 4
 
     // Top face
-    0.0f,  1.0f, 1.0f,   // Vertex 5
-     1.0f,  1.0f, 1.0f,   // Vertex 6
-     1.0f,  1.0f, 0.0f,  // Vertex 7
+    0.0f, 1.0f, 1.0f, // Vertex 5
+    1.0f, 1.0f, 1.0f, // Vertex 6
+    1.0f, 1.0f, 0.0f, // Vertex 7
 
-     1.0f,  1.0f, 0.0f,  // Vertex 7
-    0.0f,  1.0f, 0.0f,  // Vertex 4
-    0.0f,  1.0f, 1.0f,   // Vertex 5
+    1.0f, 1.0f, 0.0f, // Vertex 7
+    0.0f, 1.0f, 0.0f, // Vertex 4
+    0.0f, 1.0f, 1.0f, // Vertex 5
 };
 
 static const float CUBE_NORMALS[] = 
@@ -192,7 +192,7 @@ static inline void fuse_block_to_chunk(ChunkData *chunk_data, int x, int y, int 
             chunk_data->normals.append(CUBE_NORMALS[18*LEFT+i*3+2]);
         }
     }
-    if(y > 0 && !BLOCK_INFO[chunk_data->blocks[y-1][x][z].type].is_cube)
+    if(y == 0 || !BLOCK_INFO[chunk_data->blocks[y-1][x][z].type].is_cube)
     {
         for(int i = 0; i < 6; i++)
         {
@@ -206,7 +206,7 @@ static inline void fuse_block_to_chunk(ChunkData *chunk_data, int x, int y, int 
             chunk_data->normals.append(CUBE_NORMALS[18*BOTTOM+i*3+2]);
         }
     }
-    if(y < CHUNK_HEIGHT-1 && !BLOCK_INFO[chunk_data->blocks[y+1][x][z].type].is_cube)
+    if(y == CHUNK_HEIGHT-1 || !BLOCK_INFO[chunk_data->blocks[y+1][x][z].type].is_cube)
     {
         for(int i = 0; i < 6; i++)
         {
@@ -309,7 +309,7 @@ void chunk_update_model(ChunkData *chunk_data, Atlas atlas)
     generate_chunk_data_model(chunk_data);
 }
 
-Chunk chunk_generate(int x, int z, Atlas atlas)
+Chunk chunk_generate(int x, int z, Atlas atlas, ChunkEditHistory *history)
 {
     srand(x^z);
 
@@ -324,7 +324,7 @@ Chunk chunk_generate(int x, int z, Atlas atlas)
             float perlin_height = perlin2d((float)(x-0.5)*CHUNK_SIZE+j, (float)(z-0.5)*CHUNK_SIZE+k, .01, 3);
             perlin_height*=32.0;
             for(int i = 0; i < CHUNK_HEIGHT; i++)
-            { 
+            {
                 if(i < perlin_height/2)
                 {
                     chunk.data->blocks[i][j][k].type = BLOCK_TYPE_STONE;
@@ -346,6 +346,18 @@ Chunk chunk_generate(int x, int z, Atlas atlas)
                 chunk.data->blocks[i][j][k].y = i;
                 chunk.data->blocks[i][j][k].z = k;
             }
+        }
+    }
+
+    if(history)
+    {
+        for(int i = 0; i < history->edits.size; i++)
+        {
+            int bx = history->edits[i].x;
+            int by = history->edits[i].y;
+            int bz = history->edits[i].z;
+
+            chunk.data->blocks[by][bx][bz].type = history->edits[i].type;
         }
     }
 
@@ -380,6 +392,18 @@ Chunk *world_find_chunk(World *world, int x, int z)
         if(world->chunks[i].x == x && world->chunks[i].z == z)
         {
             return &(world->chunks[i]);
+        }
+    }
+    return 0;
+}
+
+ChunkEditHistory *world_find_edit_history(World *world, int x, int z)
+{
+    for(int i = 0; i < world->histories.size; i++)
+    {
+        if(world->histories[i].x == x && world->histories[i].z == z)
+        {
+            return &(world->histories[i]);
         }
     }
     return 0;
@@ -451,7 +475,24 @@ void world_update_neighbors(World *world, Chunk chunk, Atlas atlas, bool updatin
         generate_chunk_data_model(neighbors[i]->data);
         if(!updating_neighbors) world_update_neighbors(world, *(neighbors[i]), atlas, true);
     }
+}
 
+void world_update_block(World *world, Chunk chunk, Atlas atlas, int x, int y, int z, BlockType type)
+{
+    chunk.data->blocks[y][x][z].type = type;
+    chunk_update_model(chunk.data, atlas);
+    world_update_neighbors(world, chunk, atlas);
+
+    if(!chunk.history)
+    {
+        chunk.history = world_find_edit_history(world, chunk.x, chunk.z);
+        if(!chunk.history)
+        {
+            world->histories.append({chunk.x, chunk.z, {0}});
+        }
+    }
+    chunk.history = &(world->histories[world->histories.size-1]);
+    chunk.history->edits.append({x,y,z,type});
 }
 
 static inline void get_next_chunk(World *world, int x, int z, Atlas atlas, int depth=0)
@@ -470,7 +511,8 @@ static inline void get_next_chunk(World *world, int x, int z, Atlas atlas, int d
     }
     else
     {
-        Chunk chunk = chunk_generate(x, z, atlas);
+        ChunkEditHistory *history = world_find_edit_history(world, x, z);
+        Chunk chunk = chunk_generate(x, z, atlas, history);
 
         if(world->chunks.size < world->max_chunks)
         {

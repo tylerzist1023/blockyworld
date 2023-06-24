@@ -19,11 +19,6 @@
 #pragma comment(lib, "User32")
 #pragma comment(lib, "shell32")
 
-void print_vec3(Vector3 v)
-{
-    printf("{%f, %f, %f}\n", v.x, v.y, v.z);
-}
-
 void CustomLog(int msgType, const char *text, va_list args)
 {
     return;
@@ -78,6 +73,8 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
                 world_update(&world, atlas);
 
             EndMode3D();
+
+            DrawRing({GetScreenWidth()/2.f, GetScreenHeight()/2.f}, 0.f, 2.f, 0.f, 360.f, 20, RAYWHITE);
 
         EndDrawing();
     }
