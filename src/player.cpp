@@ -98,7 +98,7 @@ void player_update(Player *player, World *world, Atlas atlas)
             // It doesn't matter if we copy this by value or not because of the chunk data.
             Chunk *our_chunk = &(world->chunks[i]);
 
-            Matrix chunk_transform = MatrixTranslate(our_chunk->x * CHUNK_SIZE, 0.f, our_chunk->z * CHUNK_SIZE);
+            Matrix chunk_transform = MatrixTranslate(float(our_chunk->x) * CHUNK_SIZE, 0.f, float(our_chunk->z) * CHUNK_SIZE);
             RayCollision collision_mesh = GetRayCollisionMesh(ray, our_chunk->data->finished_model.meshes[0], chunk_transform);
 
             // We add the mesh's normal to the collision point so it falls on the inside of the block, so when we do the div, it will guarantee the correct block is selected.

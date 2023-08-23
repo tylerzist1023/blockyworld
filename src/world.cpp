@@ -321,7 +321,7 @@ Chunk chunk_generate(int x, int z, Atlas atlas, ChunkEditHistory *history)
     {
         for(int k = 0; k < CHUNK_SIZE; k++)
         {
-            float perlin_height = perlin2d((float)(x-0.5)*CHUNK_SIZE+j, (float)(z-0.5)*CHUNK_SIZE+k, .01, 3);
+            float perlin_height = perlin2d((float)(x-0.5)*CHUNK_SIZE+j, (float)(z-0.5)*CHUNK_SIZE+k, .01f, 3);
             perlin_height*=32.0;
             for(int i = 0; i < CHUNK_HEIGHT; i++)
             {
@@ -530,7 +530,7 @@ static inline void get_next_chunk(World *world, int x, int z, Atlas atlas, int d
 
 void world_update(World *world, Atlas atlas)
 {
-    get_next_chunk(world, world->player.camera.position.x/CHUNK_SIZE,  world->player.camera.position.z/CHUNK_SIZE, atlas);
+    get_next_chunk(world, int(world->player.camera.position.x)/CHUNK_SIZE,  int(world->player.camera.position.z)/CHUNK_SIZE, atlas);
 
     for(int i = 0; i < world->chunks.size; i++)
     {
