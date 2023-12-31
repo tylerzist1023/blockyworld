@@ -2,6 +2,7 @@
 Infinite voxel world generator.
 
 ## TODO
+- Project is on hold until I get a working hash table implemented.
 - Collision
 - Inventory
 - Biomes
